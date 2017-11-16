@@ -2,14 +2,15 @@
 
   <div class="column-block">
 
-    <h1>Showing accounts</h1>
+    <h1>Email notifications configuration - Showing accounts</h1>
 
     <table id="accounts-table" class="table table-condensed mobile-data">
       <thead>
       <tr>
         <th>Name</th>
         <th>ID</th>
-        <th>Notified for invoices?</th>
+        <th>Events</th>
+        <th></th>
       </tr>
       </thead>
       <tbody>
@@ -20,6 +21,8 @@
     </table>
 
   </div>
+
+  <%= render :partial => 'configure_events_modal' %>
 
 </div>
 
@@ -37,7 +40,10 @@
         "processing": true,
         "serverSide": true,
         "search": {"search": null},
-        "ajax": "<%= email_notification_pagination_path(:record_total => @record_total, :format => :json) %>"
+        "ajax": "<%= email_notification_pagination_path(:record_total => @record_total, :format => :json) %>",
+        "columnDefs": [
+            { className: "event-class", "targets": [ 2 ] }
+        ]
       });
 
     });

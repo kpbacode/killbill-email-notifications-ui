@@ -19,15 +19,21 @@ module Kenui
         rows = KillBillClient::Model::Account.find_in_batches(offset, limit, false, false, options_for_klient)
       end
 
+      account_ids = rows.map { |account| account.account_id }
+      email_notifications_configuration = Kenui::EmailNotificationService.get_configurations(account_ids, options_for_klient)
+
       rows.each do |row|
+
+        configuration = email_notifications_configuration.select { |event| event[:kbAccountId] == row.account_id }
+        events = configuration.map { |event| event[:eventType] }.join(', ')
         data << [
           row.name,
           row.account_id,
-          view_context.button_to(row.is_notified_for_invoices ? 'YES' : 'NO',
-                                 email_notifications_toggle_path(account_id: row.account_id,
-                                                                 is_notified: !row.is_notified_for_invoices),
-                                 method: :post,
-                                 class: row.is_notified_for_invoices ? 'btn btn-success' : 'btn btn-danger')
+          events,
+          view_context.link_to('<i class="fa fa-cog" aria-hidden="true"></i>'.html_safe,
+                               '#configureEmailNotification',
+                               data: { name: row.name, account_id: row.account_id,
+                                       events: events, toggle: 'modal', target: '#configureEmailNotification'})
         ]
       end
 
@@ -36,17 +42,35 @@ module Kenui
       end
     end
 
-    def toggle
+    def events_to_consider
+      data = Kenui::EmailNotificationService.get_events_to_consider(options_for_klient)
 
-      is_success, error = Kenui::EmailNotificationService.set_email_notification(params.require(:account_id),
-                                                                                 params[:is_notified] == 'true',
-                                                                                 'email_notification_ui',nil,
-                                                                                 nil, options_for_klient )
+      respond_to do |format|
+        format.json { render json: { data: data} }
+      end
+    end
+
+    def configuration
+      account_id = params.require(:account_id)
+      data = Kenui::EmailNotificationService.get_configuration_per_account(account_id,options_for_klient)
+
+      respond_to do |format|
+        format.json { render json: { data: data} }
+      end
+    end
+
+    def set_configuration
+      configuration = params.require(:configuration)
+
+      is_success, message = Kenui::EmailNotificationService.set_configuration_per_account(configuration[:account_id],
+                                                                                          configuration[:event_types],
+                                                                                          'kenui', nil, nil,
+                                                                                          options_for_klient )
 
       if is_success
-        flash[:notice] = "Email preferences updated"
+        flash[:notice] = message
       else
-        flash[:error] = error
+        flash[:error] = message
       end
       redirect_to email_notifications_path
     end
