@@ -23,9 +23,12 @@ module Kenui
       email_notifications_configuration = Kenui::EmailNotificationService.get_configurations(account_ids, options_for_klient)
 
       rows.each do |row|
+        events = ''
+        unless email_notifications_configuration.first.is_a?(FalseClass)
+          configuration = email_notifications_configuration.select { |event| event[:kbAccountId] == row.account_id }
+          events = configuration.map { |event| event[:eventType] }.join(', ')
+        end
 
-        configuration = email_notifications_configuration.select { |event| event[:kbAccountId] == row.account_id }
-        events = configuration.map { |event| event[:eventType] }.join(', ')
         data << [
           row.name,
           view_context.link_to(row.account_id, "/accounts/#{row.account_id}"),
