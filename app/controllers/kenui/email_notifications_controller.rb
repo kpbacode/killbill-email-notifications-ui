@@ -28,7 +28,7 @@ module Kenui
         events = configuration.map { |event| event[:eventType] }.join(', ')
         data << [
           row.name,
-          row.account_id,
+          view_context.link_to(row.account_id, "/accounts/#{row.account_id}"),
           events,
           view_context.link_to('<i class="fa fa-cog" aria-hidden="true"></i>'.html_safe,
                                '#configureEmailNotification',
