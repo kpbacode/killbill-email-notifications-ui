@@ -46,10 +46,13 @@ module Kenui
 
       def email_notification_plugin_available?(options = nil)
 
-        nodes_info = KillBillClient::Model::NodesInfo.nodes_info(options)
-        plugins_info = nodes_info.first.plugins_info
-        return !(plugins_info.find_index { |plugin| plugin.plugin_key.include?('email-notifications')}).nil?, nil
-      rescue => e
+        # inquire if the plugin is listening
+        path = KILLBILL_EMAIL_NOTIFICATION_PREFIX
+        KillBillClient::API.get path, nil, options
+
+        return true, nil
+      # Response error if email notification plugin is not listening
+      rescue KillBillClient::API::ResponseError => e
         return false, e.message.to_s
       end
 
