@@ -12,8 +12,7 @@ module Kenui
     test 'should set configuration' do
       account_id = SecureRandom.uuid.to_s
       configuration = { :account_id => account_id,
-                        :event_type => ['INVOICE_NOTIFICATION', 'INVOICE_CREATION']
-      }
+                        :event_types => ['INVOICE_NOTIFICATION', 'INVOICE_CREATION']}
 
       post email_notifications_configuration_path, params: { configuration: configuration }
       follow_redirect!
