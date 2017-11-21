@@ -1,0 +1,50 @@
+<div class="search">
+
+  <div class="column-block">
+
+    <h1>Email notifications configuration - Showing accounts</h1>
+
+    <table id="accounts-table" class="table table-condensed mobile-data">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>ID</th>
+        <th>Events</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td colspan="3" class="dataTables_empty">Loading data from server</td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <%= render :partial => 'configure_events_modal' %>
+
+</div>
+
+<%= javascript_tag do %>
+    $(document).ready(function() {
+      var table = $('#accounts-table').DataTable({
+        "pagingType": "simple",
+        "language": {
+            "info": "Showing _START_ to _END_ of _TOTAL_ entries"
+        },
+        "pageLength": 50,
+        "displayStart": 0,
+        "order": [[ 0, "asc" ]],
+        "ordering": false,
+        "processing": true,
+        "serverSide": true,
+        "search": {"search": null},
+        "ajax": "<%= email_notification_pagination_path(:record_total => @record_total, :format => :json) %>",
+        "columnDefs": [
+            { className: "event-class", "targets": [ 2 ] }
+        ]
+      });
+
+    });
+<% end %>
