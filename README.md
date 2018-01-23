@@ -4,6 +4,14 @@ Rails mountable engine to configure the email notifications plugin
 * See [killbill-email-notifications-plugin](https://github.com/killbill/killbill-email-notifications-plugin) to get started with the email notification plugin.
 * See [killbill-admin-ui-standalone](https://github.com/killbill/killbill-admin-ui-standalone) to get started with the Kill Bill Admin UI.
 
+Kill Bill compatibility
+-----------------------
+
+| Kenui version | Kill Bill version |
+| ------------: | ----------------: |
+| 0.1.x         | 0.18.z            |
+| 1.x.y         | 0.19.z            |
+
 Getting Started
 ---------------
 
