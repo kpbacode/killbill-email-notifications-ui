@@ -10,7 +10,8 @@ Kill Bill compatibility
 | Kenui version | Kill Bill version |
 | ------------: | ----------------: |
 | 0.1.x         | 0.18.z            |
-| 1.x.y         | 0.19.z            |
+| 1.x.y         | 0.20.z            |
+| 2.x.y         | 0.22.z            |
 
 Getting Started
 ---------------
