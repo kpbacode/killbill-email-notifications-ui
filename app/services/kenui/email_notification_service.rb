@@ -1,11 +1,11 @@
+# frozen_string_literal: true
+
 module Kenui
   # class where email notification services resides
   class EmailNotificationService < KillBillClient::Model::Resource
-
     KILLBILL_EMAIL_NOTIFICATION_PREFIX = '/plugins/killbill-email-notifications/v1'
 
     class << self
-
       def get_events_to_consider(options = {})
         path = "#{KILLBILL_EMAIL_NOTIFICATION_PREFIX}/eventsToConsider"
         response = KillBillClient::API.get path, {}, options
@@ -14,11 +14,11 @@ module Kenui
 
       def get_configurations(account_ids, options = {})
         path = "#{KILLBILL_EMAIL_NOTIFICATION_PREFIX}/accounts"
-        response = KillBillClient::API.get path, {:kbAccountId => account_ids}, options
+        response = KillBillClient::API.get path, { kbAccountId: account_ids }, options
 
         JSON.parse(response.body).map(&:symbolize_keys)
-      rescue => e
-        return false, e.message.to_s
+      rescue StandardError => e
+        [false, e.message.to_s]
       end
 
       def get_configuration_per_account(account_id, options = {})
@@ -26,8 +26,8 @@ module Kenui
         response = KillBillClient::API.get path, {}, options
 
         JSON.parse(response.body).map(&:symbolize_keys)
-      rescue => e
-        return false, e.message.to_s
+      rescue StandardError => e
+        [false, e.message.to_s]
       end
 
       def set_configuration_per_account(account_id, event_types, user = 'kenui', reason = nil, comment = nil, options = {})
@@ -39,23 +39,21 @@ module Kenui
 
         KillBillClient::API.post path, event_types, {}, options.merge(more_options)
 
-        return true, "Email notifications for account #{account_id} was successfully updated"
-      rescue => e
-        return false, e.message.to_s
+        [true, "Email notifications for account #{account_id} was successfully updated"]
+      rescue StandardError => e
+        [false, e.message.to_s]
       end
 
       def email_notification_plugin_available?(options = nil)
-
         # inquire if the plugin is listening
         path = KILLBILL_EMAIL_NOTIFICATION_PREFIX
         KillBillClient::API.get path, nil, options
 
-        return true, nil
+        [true, nil]
       # Response error if email notification plugin is not listening
       rescue KillBillClient::API::ResponseError => e
-        return false, e.message.to_s
+        [false, e.message.to_s]
       end
-
     end
   end
 end

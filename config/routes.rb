@@ -1,8 +1,9 @@
-Kenui::Engine.routes.draw do
+# frozen_string_literal: true
 
+Kenui::Engine.routes.draw do
   root to: 'email_notifications#index'
 
-  resources :email_notifications, :only => [:index]
+  resources :email_notifications, only: [:index]
 
   scope '/email_notifications' do
     match '/pagination' => 'email_notifications#pagination', :via => :get, :as => 'email_notification_pagination'

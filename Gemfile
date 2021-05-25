@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 # Declare your gem's dependencies in kenui.gemspec.
@@ -13,5 +15,5 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 
-#gem 'killbill-client', :git => 'https://github.com/killbill/killbill-client-ruby.git', :branch => 'work-for-release-0.21.x'
-#gem 'killbill-client', '3.2.0'
+# gem 'killbill-client', :git => 'https://github.com/killbill/killbill-client-ruby.git', :branch => 'work-for-release-0.21.x'
+# gem 'killbill-client', '3.2.0'
