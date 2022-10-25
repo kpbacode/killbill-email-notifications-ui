@@ -15,5 +15,5 @@
  *= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
  *= require font-awesome
  *= require kenui/email_notifications
- *= require bootstrap_and_overrides
+ *= require bootstrap
  */
