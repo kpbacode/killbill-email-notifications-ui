@@ -11,7 +11,7 @@
 // about supported directives.
 //
 //= require jquery
-//= require twitter/bootstrap
+//= require bootstrap
 //= require dataTables/jquery.dataTables
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
 //= require kenui/kenui
